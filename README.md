@@ -16,31 +16,7 @@ Rather than training a standard multiclass classifier that requires hundreds of 
 
 ---
 
-## 🏗️ Architecture & Similarity Metric
 
-```mermaid
-flowchart TD
-    subgraph Inputs["Paired Input Images"]
-        A["Anchor Face Image (A)<br/>(250x250x3)"]
-        V["Verification Image (P or N)<br/>(250x250x3)"]
-    end
-
-    subgraph Twin_Backbone["Twin Feature Extractor (Shared Weights W)"]
-        CNN1["Conv2D + MaxPool + Conv2D + Dense<br/>➔ 4096-dim Embedding Vector f(A)"]
-        CNN2["Conv2D + MaxPool + Conv2D + Dense<br/>➔ 4096-dim Embedding Vector f(V)"]
-    end
-
-    A --> CNN1
-    V --> CNN2
-
-    CNN1 --> Dist["L1 Distance Layer<br/>|f(A) - f(V)|"]
-    CNN2 --> Dist
-
-    Dist --> DenseOut["Dense Layer (Sigmoid Activation)"]
-    DenseOut --> Verdict{"Similarity Probability Score<br/>p >= Threshold (0.5)"}
-    Verdict -->|"True"| Match["Matched (Same Person)"]
-    Verdict -->|"False"| NoMatch["Unmatched (Different Person)"]
-```
 
 ### Key Technical Aspects:
 1. **L1 Distance Embedding**:
